@@ -30,8 +30,8 @@ $ErrorActionPreference = "Stop"
 
 
     <##
-    # Create new dev environment
-    #>
+     # Create new dev environment
+     #>
 
     Import-Module "Cluster" -Force
 

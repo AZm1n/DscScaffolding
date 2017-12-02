@@ -9,28 +9,28 @@
       "value": "Standard_D2_v2"
     },
     "localAdminUserName": {
-      "value": "onerfuser"
+      "value": "<The user name you will use to access the VMs>"
     },
     "localAdminPassword": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/64302270-7aa4-4ae3-86a4-e7d41b6f1a1a/resourceGroups/RTProdResourceGroup/providers/Microsoft.KeyVault/vaults/RTProdKeyVault"
+          "id": "<Provide the Key Vault resource ID>"
         },
-        "secretName": "OneRFDeploymentsLocalAdmin-Password"
+        "secretName": "<The name of the secret in the Key Vault>"
       }
     },
     "servicePrincipalApplicationId": {
-      "value": "c8439299-8adc-434d-9322-b3d2a176bb23"
+      "value": "<Provide the Application ID of the service principal>"
     },
     "servicePrincipalTenantId": {
-      "value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+      "value": "<Provide the AAD instance's Directory ID>" 
     },
     "servicePrincipalKey": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/64302270-7aa4-4ae3-86a4-e7d41b6f1a1a/resourceGroups/RTProdResourceGroup/providers/Microsoft.KeyVault/vaults/RTProdKeyVault"
+          "id": "<Provide the Key Vault resource ID from the Properties blade in Azure Portal>"
         },
-        "secretName": "OneRFDeploymentsServicePrincipal-Key"
+        "secretName": "<The name of the secret in the Key Vault>"
       }
     }
   }

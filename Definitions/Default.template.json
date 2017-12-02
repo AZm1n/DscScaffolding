@@ -42,7 +42,7 @@
     "environment": {
       "type": "string",
       "metadata": {
-        "description": "See README for OneRF terminology"
+        "description": "The environment ID using '<service name>-<flighting ring>-<region>' notation"
       }
     },
     "sasToken": {
@@ -238,7 +238,6 @@
       "name": "vmss",
       "location": "[resourceGroup().location]",
       "tags": {
-        "Application": "onerf",
         "Environment": "[resourceGroup().name]"
       },
       "apiVersion": "2017-03-30",

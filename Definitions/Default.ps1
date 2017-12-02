@@ -11,24 +11,16 @@ Configuration Main {
         [Parameter(Mandatory)][string]$ServicePrincipalTenantId
     )
 
-    Import-DscResource -ModuleName "OneRF"
     Import-DscResource -ModuleName "PSDesiredStateConfiguration"
-    Import-DscResource -ModuleName @{ModuleName = "xPSDesiredStateConfiguration"; RequiredVersion = "8.0.0.0"}
-    Import-DscResource -ModuleName @{ModuleName = "xWebAdministration"; RequiredVersion = "1.19.0.0"}
+    Import-DscResource -ModuleName "MyModule"
 
     # extract environment properties from environment id
     ($Service, $FlightingRing, $Region) = $Environment -split "-"
 
-    OneRFPlatform BaseConfiguration {
-        Service       = $Service
-        Region        = $Region
-        FlightingRing = $FlightingRing
+    MyCompositeResource MyCompositeTest {
+        ConfigValues    = @("a", "b", "c")
+        LogConfigValues = $true
     }
 
 }
 
-Main 
-
-Start-DscConfiguration ".\Main" | Wait-Job | Receive-Job
-
-Remove-DscConfigurationDocument -Stage Current, Pending, Previous

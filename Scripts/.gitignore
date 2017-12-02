@@ -1,6 +1,0 @@
-
-# Compiled DSC configurations
-*.mof
-
-# Azure login tokens
-.context.json
