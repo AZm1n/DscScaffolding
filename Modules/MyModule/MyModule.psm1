@@ -13,7 +13,8 @@ enum Ensure {
 # DSC resources are serialized on compilation.  As such, all class properties must support type coercion to primitives.
 class MyClassBasedResource {
     [DscProperty(Key)]
-    
+    $MyMandatoryProperty
+
     [DscProperty()]
     [Ensure]$Ensure
 
