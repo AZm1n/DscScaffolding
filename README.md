@@ -1,6 +1,4 @@
-<div class="warning">
-    This repro is still in active development and is not currently supported by Microsoft
-</div>
+# This repro is still in active development and is not currently supported by Microsoft
 
 # DscScaffolding
 Project template for creating PowerShell Desired State Configurations.
