@@ -1,10 +1,11 @@
 # This repro is still in active development and is not currently supported by Microsoft
 
 # DscScaffolding
-Project template for creating PowerShell Desired State Configurations.
+Project template for creating PowerShell Desired State Configurations and deploying them to Azure using the [Cluster](https://github.com/Microsoft/Cluster) PowerShell module.
 
-A basic understanding of PowerShell Desired State Configurations is required for this project template.  Read https://docs.microsoft.com/en-us/powershell/dsc/overview before continuing.
-
+### Prerequisite Concepts
+* [PowerShell Desired State Configurations](https://docs.microsoft.com/en-us/powershell/dsc/overview)
+* [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview)
 
 ## Structure
 
@@ -12,20 +13,7 @@ A basic understanding of PowerShell Desired State Configurations is required for
 Configures project-specific settings in VS Code to help avoid common PowerShell issues.
 
 ### Definitions
-This is where configs are placed.  For a service "MyService", flighting ring "DEV", and config type "parameters.json", the first existing config will be chosen in the following order:
-1. MyService.DEV.parameters.json
-1. MyService.parameters.json
-1. Default.DEV.parameters.json
-1. Default.parameters.json
-
-More information on Azure Resource Manager templates: https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-create-first-template
-
-#### Supported Config Types
-* template.json -- for Azure Resource Manager templates
-* parameters.json -- for Azure Resource Manager template parameters
-* ps1 -- for DSCs 
-* psd1 -- for [DSC config data](https://docs.microsoft.com/en-us/powershell/dsc/separatingenvdata)
-
+This is where configs are placed.  Service definitions (AzureRM templates, DSCs, etc) are placed in this folder and named with according to the [Config Selection](https://github.com/Microsoft/Cluster#configselection) rules.
 
 ### Modules
 When developing a custom DSC, all resources must be placed in a module.  There are many community modules listed and documented on https://github.com/PowerShell/, and installable from the PowerShell gallery with `Install-Module`.  Custom resources must be defined in custom modules.  For development convenience, the Modules folder is added to the PowerShell module search path (`$env:PSModulePath`) with `Initialize-LocalEnvironment.ps1` script, enabling linting, validation, and packaging the DSC for deployment.  
