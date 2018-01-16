@@ -1,5 +1,5 @@
 "Name","Version"
-"Cluster","1.0.0.0"
+"Cluster","0.1.0"
 "AzureRM","5.0.1"
 "Pester","4.1.1"
 "PSScriptAnalyzer","1.16.1"
