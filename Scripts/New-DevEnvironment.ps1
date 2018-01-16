@@ -38,8 +38,8 @@ $ErrorActionPreference = "Stop"
     Write-Information "Deploying dev cluster"
     New-Cluster `
         -ServiceName ([Regex]::Replace($env:USERNAME, "^\w", {param($c) $c.Value.ToUpper() })) `
-        -FlightingRing "DEV" `
-        -Region "EastUS"
+        -FlightingRingName "DEV" `
+        -RegionName "EastUS"
 
 } *>&1 | Tee-Object "$PSScriptRoot\New-DevEnvironment.log"
 
