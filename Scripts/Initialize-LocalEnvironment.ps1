@@ -1,7 +1,8 @@
-Param(
-    [Parameter(Mandatory)]
-    [string]$SubscriptionName
-)
+<##
+ # Initialize-LocalEnvironment
+ ##
+ # Configures the local system to build and release Cluster configurations
+ #>
 
 $InformationPreference = "Continue"
 $ErrorActionPreference = "Stop"
@@ -9,11 +10,13 @@ $ErrorActionPreference = "Stop"
 # literal path to repo modules
 $ModulePath = Resolve-Path "$PSScriptRoot\..\Modules"
 
-
 # ensure custom modules are found during DSC packaging and linting
-if (($env:PSModulePath -split ";") -notcontains $ModulePath) {
+if ($ModulePath -notin ($env:PSModulePath -split ";")) {
     Write-Information "Adding '$ModulePath\Modules' to your machine's 'PSModulePath'"
-    [Environment]::SetEnvironmentVariable("PSModulePath", "$env:PSModulePath;$ModulePath", [EnvironmentVariableTarget]::User)
+    # current process
+    $env:PSModulePath = "$env:PSModulePath;$ModulePath"
+    # future processes
+    [Environment]::SetEnvironmentVariable("PSModulePath", $env:PSModulePath, [EnvironmentVariableTarget]::User)
 }
 
 # enable headless installation from PowerShell gallery
@@ -26,13 +29,3 @@ Write-Information "Ensuring modules are installed"
 Import-Csv "$PSScriptRoot\..\RequiredPSGalleryModules.csv" `
     | ? {-not (Get-Module -FullyQualifiedName @{ModuleName = $_.Name; ModuleVersion = $_.Version} -ListAvailable)} `
     | % {Install-Module -Name $_.Name -RequiredVersion $_.Version -Scope "CurrentUser" -AllowClobber}
-
-# set checkpoint to avoid installing in the future
-Write-Information "Saving your settings to '$PSScriptRoot\.context.json' to speed things up next time"
-Save-AzureRmContext `
-    -Path "$PSScriptRoot\.context.json" `
-    -Profile (Add-AzureRmAccount -SubscriptionName $SubscriptionName) `
-    -Force
-
-Write-Warning "Reopen your PowerShell window for the changes to take effect"
-

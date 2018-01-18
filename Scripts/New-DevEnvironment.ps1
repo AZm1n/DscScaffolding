@@ -1,45 +1,35 @@
 <##
- # Simple parameterless script for devs to quickly create a OneRF environment to test in
+ # New-DevEnvironment
+ ##
+ # Creates a new dev environment in Azure
  #>
+Param(
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [Alias('Service')]
+    [string]$ServiceName
+)
 
 $InformationPreference = "Continue"
 $ErrorActionPreference = "Stop"
 
 
-# run in scriptblock to capture all output streams
-& {
+Push-Location -Path "$PSScriptRoot\.."
 
-    # initialize environment if not initialized
-    try {
-        # validate settings can be parsed
-        Write-Information "Checking if logged into Azure"
-        Import-AzureRmContext -Path "$PSScriptRoot\.context.json"
-    } catch {
-        # set up settings and exit
-        Write-Information "Not logged in to Azure; logging in (won't happen in subsequent invokations)"
-        &"$PSScriptRoot\Initialize-LocalEnvironment.ps1" (Read-Host "Azure subscription name")
-        Write-Information "Your local machine is now configured"
-        Start-Process `
-            -FilePath "PowerShell" `
-            -ArgumentList "$PSScriptRoot\New-DevEnvironment.ps1" `
-            -UseNewEnvironment `
-            -NoNewWindow `
-            -Wait
-        exit
-    }
+Write-Information "Ensuring prerequisites are met"
+.\Initialize-LocalEnvironment
 
+Write-Information "Ensuring logged in to Azure"
+$subscription = Read-Host "Azure subscription name"
+.\Restore-AzureRmContext $subscription
 
-    <##
-     # Create new dev environment
-     #>
+Write-Information "Deploying dev cluster"
+Import-Module "Cluster" -Force
+New-Cluster `
+    -ServiceName $ServiceName `
+    -FlightingRingName "DEV" `
+    -RegionName "EastUS" `
+    *>&1 | Tee .\New-DevEnvironment.log
 
-    Import-Module "Cluster" -Force
-
-    Write-Information "Deploying dev cluster"
-    New-Cluster `
-        -ServiceName ([Regex]::Replace($env:USERNAME, "^\w", {param($c) $c.Value.ToUpper() })) `
-        -FlightingRingName "DEV" `
-        -RegionName "EastUS"
-
-} *>&1 | Tee-Object "$PSScriptRoot\New-DevEnvironment.log"
+Pop-Location
 

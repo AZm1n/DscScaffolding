@@ -1,30 +1,23 @@
 ﻿<##
- # Assert-ValidBuild.ps1
+ # Assert-ValidBuild
  ##
- # This script is designed to validate builds on build servers, such as VSTS.
- # This script should be used locally to validate the current scripts 
+ # Script for use as an Azure PowerShell Task in a VSTS Build Definition.  Git should require successful completion of the build definition before merging changes into master.  Modify as needed.
  #>
 
 $ErrorActionPreference = "Continue"
 $InformationPreference = "Continue"
 
-# install required modules
-Install-PackageProvider -Name "NuGet" -MinimumVersion "2.8.5.201" -Force -Scope "CurrentUser" | Out-Null
-Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 
-# install required modules
-Import-Csv "$PSScriptRoot\..\RequiredPSGalleryModules.csv" `
-    | ? {-not (Get-Module -FullyQualifiedName @{ModuleName = $_.Name; RequiredVersion = $_.Version} -ListAvailable)} `
-    | % {Install-Module -Name $_.Name -RequiredVersion $_.Version -Scope "CurrentUser"}
 
-# ensure module import works in code analysis
-$env:PSModulePath += ";$PSScriptRoot\..\Modules"
+. "$PSScriptRoot\Initialize-LocalEnvironment"
 
 
 <##
- # Assert valid style
+ # Run PSScriptAnalyzer
  #>
+
 Import-Module "PSScriptAnalyzer" 
+
 $FailedTests = Invoke-ScriptAnalyzer -Path "$PSScriptRoot\.." -Recurse -ErrorVariable "scriptAnalyzerErrors"
 if ($FailedTests.Count -or $scriptAnalyzerErrors.Count) {
     # fail
@@ -35,15 +28,37 @@ if ($FailedTests.Count -or $scriptAnalyzerErrors.Count) {
     $scriptAnalyzerErrors | Out-String | % {Write-Information $_}
     $FailedTests | Format-Table | Out-String | % {Write-Information $_}
     Write-Error "Failed style enforcement tests"
+
 } else {
     # pass
     Write-Information "Script style is valid"
+
 }
 
 
+
 <##
- # Assert valid Pester tests
+ # Run unit tests
  #>
+
 Import-Module "Pester"
 Invoke-Pester "$PSScriptRoot\.."
+
+
+
+<##
+ # Compile DSC - Uncomment these lines and modify parameters to match your DSC
+ #>
+
+# $parameters = @{
+#     Parameter1 = "..."
+#     Parameter2 = "..."
+# }
+
+# $dscPaths = (Get-ChildItem "$PSScriptRoot\..\Definitions\*.dsc.ps1").FullName
+# foreach ($dscPath in $dscPaths) {
+#     .$dscPath
+#     Main @parameters
+# }
+
 
