@@ -21,7 +21,7 @@ Write-Information "Ensuring prerequisites are met"
 
 Write-Information "Ensuring logged in to Azure"
 $subscription = Read-Host "Azure subscription name"
-.\Restore-AzureRmContext $subscription
+. .\Restore-AzureRmContext $subscription
 
 Write-Information "Deploying dev cluster"
 Import-Module "Cluster" -Force

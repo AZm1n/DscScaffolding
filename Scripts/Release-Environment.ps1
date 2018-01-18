@@ -20,7 +20,7 @@ Param(
 Push-Location $PSScriptRoot
 
 . .\Initialize-LocalEnvironment
-.\Restore-AzureRmContext
+. .\Restore-AzureRmContext
 Import-Module "Cluster"
 
 $clusters = Select-Cluster $ServiceName $FlightingRingName $RegionName

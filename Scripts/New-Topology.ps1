@@ -18,7 +18,7 @@ Param(
 Push-Location $PSScriptRoot
 
 . .\Initialize-LocalEnvironment
-.\Restore-AzureRmContext
+. .\Restore-AzureRmContext
 
 Write-Information "Create service '$ServiceName'"
 $service = New-ClusterService -Name $ServiceName
