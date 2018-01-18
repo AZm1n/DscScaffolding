@@ -19,7 +19,7 @@ Param(
 
 Push-Location $PSScriptRoot
 
-.\Initialize-LocalEnvironment
+. .\Initialize-LocalEnvironment
 .\Restore-AzureRmContext
 Import-Module "Cluster"
 

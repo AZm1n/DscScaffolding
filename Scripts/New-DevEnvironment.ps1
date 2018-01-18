@@ -17,7 +17,7 @@ $ErrorActionPreference = "Stop"
 Push-Location -Path "$PSScriptRoot\.."
 
 Write-Information "Ensuring prerequisites are met"
-.\Initialize-LocalEnvironment
+. .\Initialize-LocalEnvironment
 
 Write-Information "Ensuring logged in to Azure"
 $subscription = Read-Host "Azure subscription name"

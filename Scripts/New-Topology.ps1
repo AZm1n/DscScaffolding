@@ -17,7 +17,7 @@ Param(
 
 Push-Location $PSScriptRoot
 
-.\Initialize-LocalEnvironment
+. .\Initialize-LocalEnvironment
 .\Restore-AzureRmContext
 
 Write-Information "Create service '$ServiceName'"
