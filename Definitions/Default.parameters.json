@@ -32,6 +32,9 @@
         },
         "secretName": "<The name of the secret in the Key Vault>"
       }
+    },
+    "configJson": {
+      "value": "Default.config.json"
     }
   }
 }

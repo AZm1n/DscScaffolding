@@ -10,7 +10,7 @@ Configuration Main {
         [string]$Environment,
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [psobject]$ConfigData,
+        [psobject]$ConfigJson,
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [PSCredential]$ServicePrincipal,

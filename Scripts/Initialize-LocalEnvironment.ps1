@@ -28,4 +28,4 @@ Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 Write-Information "Ensuring modules are installed"
 Import-Csv "$PSScriptRoot\..\RequiredPSGalleryModules.csv" `
     | ? {-not (Get-Module -FullyQualifiedName @{ModuleName = $_.Name; ModuleVersion = $_.Version} -ListAvailable)} `
-    | % {Install-Module -Name $_.Name -RequiredVersion $_.Version -Scope "CurrentUser" -AllowClobber}
+    | % {Install-Module -Name $_.Name -RequiredVersion $_.Version -Scope "CurrentUser" -AllowClobber -SkipPublisherCheck}
