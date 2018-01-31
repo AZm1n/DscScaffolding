@@ -9,7 +9,7 @@
       "value": "Standard_D2_v2"
     },
     "localAdminUserName": {
-      "value": "<The user name you will use to access the VMs>"
+      "value": "MyUserName"
     },
     "localAdminPassword": {
       "reference": {
@@ -18,23 +18,20 @@
         },
         "secretName": "<The name of the secret in the Key Vault>"
       }
-    },
-    "servicePrincipalApplicationId": {
-      "value": "<Provide the Application ID of the service principal>"
-    },
-    "servicePrincipalTenantId": {
-      "value": "<Provide the AAD instance's Directory ID>" 
-    },
-    "servicePrincipalKey": {
-      "reference": {
-        "keyVault": {
-          "id": "<Provide the Key Vault resource ID from the Properties blade in Azure Portal>"
-        },
-        "secretName": "<The name of the secret in the Key Vault>"
-      }
-    },
-    "configJson": {
-      "value": "Default.config.json"
+    }
+  },
+  "servicePrincipalApplicationId": {
+    "value": "<Provide the Application ID of the service principal>"
+  },
+  "servicePrincipalTenantId": {
+    "value": "<Provide the AAD instance's Directory ID>"
+  },
+  "servicePrincipalKey": {
+    "reference": {
+      "keyVault": {
+        "id": "<Provide the Key Vault resource ID>"
+      },
+      "secretName": "<The name of the secret in the Key Vault>"
     }
   }
 }
