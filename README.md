@@ -21,7 +21,7 @@ When developing a custom DSC, all resources must be placed in a module.  There a
 More information about defining custom DSC modules and resources is available in `.\Modules\README.md`.
 
 ### Scripts
-Scripts for dev environment creation, build validation, and deployment are placed here.  Typically, these are convience scripts wrapping the `Cluster` module.
+Scripts for dev environment creation, build validation, and deployment are placed here.  Typically, these are convience scripts wrapping the `Cluster` module.  These scripts are in active development and are not currently to be trusted.
 
 ### .gitignore
 Ensures user-specific files are not saved to the git repository.
