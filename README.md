@@ -7,6 +7,8 @@ Project template for creating PowerShell Desired State Configurations and deploy
 * [PowerShell Desired State Configurations](https://docs.microsoft.com/en-us/powershell/dsc/overview)
 * [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview)
 
+## DSC Extension is currently supported.  CSE theoretically works, but has not been tested.
+
 ## Structure
 
 ### .vscode
@@ -21,7 +23,7 @@ When developing a custom DSC, all resources must be placed in a module.  There a
 More information about defining custom DSC modules and resources is available in `.\Modules\README.md`.
 
 ### Scripts
-Scripts for dev environment creation, build validation, and deployment are placed here.  Typically, these are convience scripts wrapping the `Cluster` module.
+Scripts for dev environment creation, build validation, and deployment are placed here.  Typically, these are convience scripts wrapping the `Cluster` module.  These scripts are in active development and are not currently to be trusted.
 
 ### .gitignore
 Ensures user-specific files are not saved to the git repository.
