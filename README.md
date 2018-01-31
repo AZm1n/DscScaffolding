@@ -7,8 +7,6 @@ Project template for creating PowerShell Desired State Configurations and deploy
 * [PowerShell Desired State Configurations](https://docs.microsoft.com/en-us/powershell/dsc/overview)
 * [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview)
 
-## DSC Extension is currently supported.  CSE theoretically works, but has not been tested.
-
 ## Structure
 
 ### .vscode

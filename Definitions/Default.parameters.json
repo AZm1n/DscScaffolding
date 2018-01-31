@@ -9,7 +9,7 @@
       "value": "Standard_D2_v2"
     },
     "localAdminUserName": {
-      "value": "MyUserName"
+      "value": "onerfuser"
     },
     "localAdminPassword": {
       "reference": {
