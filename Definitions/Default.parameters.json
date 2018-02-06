@@ -9,29 +9,19 @@
       "value": "Standard_D2_v2"
     },
     "localAdminUserName": {
-      "value": "onerfuser"
+      "value": "AdminUserName"
     },
     "localAdminPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "<Provide the Key Vault resource ID>"
-        },
-        "secretName": "<The name of the secret in the Key Vault>"
-      }
-    }
-  },
-  "servicePrincipalApplicationId": {
-    "value": "<Provide the Application ID of the service principal>"
-  },
-  "servicePrincipalTenantId": {
-    "value": "<Provide the AAD instance's Directory ID>"
-  },
-  "servicePrincipalKey": {
-    "reference": {
-      "keyVault": {
-        "id": "<Provide the Key Vault resource ID>"
-      },
-      "secretName": "<The name of the secret in the Key Vault>"
+      "value": "<YourPasswordHere>"
+    },
+    "servicePrincipalApplicationId": {
+      "value": "This probably isn't a real guid"
+    },
+    "servicePrincipalTenantId": {
+      "value": "This probably isn't a real guid"
+    },
+    "servicePrincipalKey": {
+      "value": "This probably isn't a real guid"
     }
   }
 }
