@@ -3,18 +3,22 @@
  ##
  # Sets the AzureRM Context from a cached file or prompt
  #>
-Param(
-    [Parameter(Mandatory)]
-    [ValidateNotNullOrEmpty()]
-    [string]$Subscription
-)
 
-if (-not (Get-AzureRmContext).Account -or (Get-AzureRmSubscription).Name -ne $Subscription) {
-    try {
-        Import-AzureRmContext -Path "$PSScriptRoot\.context.json"
-    } catch {
-        Login-AzureRmAccount
-        Set-AzureRmContext -Subscription $Subscription
-        Save-AzureRmContext -Path "$PSScriptRoot\.context.json"
-    }
+
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
+
+
+$contextPath = "$PSScriptRoot\.context.json" # must be an absolute path
+
+try {
+    Import-AzureRmContext -Path $contextPath
+} catch {
+    Add-AzureRmAccount | Out-Null
+    
+    Write-Warning "You will need to delete '$contextPath' if you wish to change the target subscription"
+    $subscription = Read-Host -Prompt "Target Azure subscription"
+    Set-AzureRmContext -Subscription $subscription
+
+    Save-AzureRmContext -Path $contextPath
 }

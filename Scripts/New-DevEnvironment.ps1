@@ -16,20 +16,17 @@ $ErrorActionPreference = "Stop"
 
 Push-Location -Path "$PSScriptRoot\.."
 
-Write-Information "Ensuring prerequisites are met"
-. .\Initialize-LocalEnvironment
-
-Write-Information "Ensuring logged in to Azure"
-$subscription = Read-Host "Azure subscription name"
-. .\Restore-AzureRmContext $subscription
+. .\Scripts\Initialize-LocalEnvironment
+. .\Scripts\Restore-AzureRmContext
+Import-Module "Cluster"
 
 Write-Information "Deploying dev cluster"
-Import-Module "Cluster" -Force
 New-Cluster `
     -ServiceName $ServiceName `
     -FlightingRingName "DEV" `
     -RegionName "EastUS" `
-    *>&1 | Tee .\New-DevEnvironment.log
+    -DefinitionsContainer ".\Definitions" `
+    *>&1 | Tee ".\New-DevEnvironment.log"
 
 Pop-Location
 

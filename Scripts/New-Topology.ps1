@@ -15,21 +15,27 @@ Param(
 )
 
 
-# Push-Location $PSScriptRoot
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
 
-# . .\Initialize-LocalEnvironment
-# . .\Restore-AzureRmContext
 
-Write-Information "Create service '$ServiceName'"
-$service = New-ClusterService -Name $ServiceName 
-$service | Write-Output
+Push-Location "$PSScriptRoot\.."
 
-Write-Information "Create flighting rings '$FlightingRingNames'"
-$flightingRings = $FlightingRingNames | % {New-ClusterFlightingRing -Service $service -Name $_ -RegionName $RegionName}
-$flightingRings | Write-Output
+. .\Scripts\Initialize-LocalEnvironment
+. .\Scripts\Restore-AzureRmContext
+Import-Module "Cluster"
 
-Write-Information "Create environment '$environment'"
-$environments = $flightingRings | % {New-ClusterEnvironment -FlightingRing $_ -RegionName $RegionName}
-$environments | Write-Output
+Write-Information "Creating service '$ServiceName'"
+$service = New-ClusterService -Name $ServiceName
 
-# Pop-Location
+$flightingRings = $FlightingRingNames | % {
+    Write-Information "Creating flighting ring '$service-$_'"
+    New-ClusterFlightingRing -Service $service -Name $_
+}
+
+$flightingRings | % {
+    Write-Information "Creating environment '$_-$RegionName'"
+    New-ClusterEnvironment -FlightingRing $_ -RegionName $RegionName
+} | Out-Null
+
+Pop-Location

@@ -4,28 +4,39 @@
  # Configures the local system to build and release Cluster configurations
  #>
 
-$InformationPreference = "Continue"
 $ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
+
+Push-Location "$PSScriptRoot\.."
+
 
 # literal path to repo modules
-$ModulePath = Resolve-Path "$PSScriptRoot\..\Modules"
+$ModulePath = Resolve-Path ".\Modules"
 
 # ensure custom modules are found during DSC packaging and linting
 if ($ModulePath -notin ($env:PSModulePath -split ";")) {
-    Write-Information "Adding '$ModulePath\Modules' to your machine's 'PSModulePath'"
-    # current process
+    Write-Information "Adding '$ModulePath' to your machine's 'PSModulePath'"
+    # save changes for current runtime
     $env:PSModulePath = "$env:PSModulePath;$ModulePath"
-    # future processes
+    # save changes for future runtimes
     [Environment]::SetEnvironmentVariable("PSModulePath", $env:PSModulePath, [EnvironmentVariableTarget]::User)
 }
 
 # enable headless installation from PowerShell gallery
-Write-Information "Adding PSGallery as a package provider"
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Scope "CurrentUser" -Force | Out-Null
-Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+if (-not (Get-PackageProvider -Name "NuGet") -or -not (Get-PSRepository -Name "PSGallery")) {
+    Write-Information "Adding PSGallery as a package provider"
+    Install-PackageProvider -Name "NuGet" -Scope "CurrentUser" -Force | Out-Null
+    Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+}
 
 # install missing required PowerShell Gallery modules
-Write-Information "Ensuring modules are installed"
-Import-Csv "$PSScriptRoot\..\RequiredPSGalleryModules.csv" `
-    | ? {-not (Get-Module -FullyQualifiedName @{ModuleName = $_.Name; ModuleVersion = $_.Version} -ListAvailable)} `
-    | % {Install-Module -Name $_.Name -RequiredVersion $_.Version -Scope "CurrentUser" -AllowClobber -SkipPublisherCheck}
+$missingModules = Import-Csv ".\RequiredPSGalleryModules.csv" `
+    | ? {-not (Get-Module -FullyQualifiedName @{ModuleName = $_.Name; ModuleVersion = $_.Version} -ListAvailable)}
+if ($missingModules) {
+    Write-Information "Ensuring modules are installed"
+    $missingModules `
+        | % {Install-Module -Name $_.Name -RequiredVersion $_.Version -Scope "CurrentUser" -AllowClobber -SkipPublisherCheck}
+}
+
+
+Pop-Location
