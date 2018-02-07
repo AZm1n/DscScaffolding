@@ -4,21 +4,24 @@
  # Script for use as an Azure PowerShell Task in a VSTS Build Definition.  Git should require successful completion of the build definition before merging changes into master.  Modify as needed.
  #>
 
-$ErrorActionPreference = "Continue"
+
 $InformationPreference = "Continue"
+$ErrorActionPreference = "Continue"
 
 
+Push-Location "$PSScriptRoot\.."
 
-. "$PSScriptRoot\Initialize-LocalEnvironment"
+
+. .\Scripts\Initialize-LocalEnvironment
 
 
 <##
- # Run PSScriptAnalyzer
- #>
+  # Run PSScriptAnalyzer
+  #>
 
-Import-Module "PSScriptAnalyzer" 
+Import-Module "PSScriptAnalyzer"
 
-$FailedTests = Invoke-ScriptAnalyzer -Path "$PSScriptRoot\.." -Recurse -ErrorVariable "scriptAnalyzerErrors"
+$FailedTests = Invoke-ScriptAnalyzer -Path "." -Recurse -ErrorVariable "scriptAnalyzerErrors"
 if ($FailedTests.Count -or $scriptAnalyzerErrors.Count) {
     # fail
     "--------------------------", 
@@ -38,17 +41,17 @@ if ($FailedTests.Count -or $scriptAnalyzerErrors.Count) {
 
 
 <##
- # Run unit tests
- #>
+  # Run unit tests
+  #>
 
 Import-Module "Pester"
-Invoke-Pester "$PSScriptRoot\.."
+Invoke-Pester "."
 
 
 
 <##
- # Compile DSC - Uncomment these lines and modify parameters to match your DSC
- #>
+  # Compile DSC - Uncomment these lines and modify parameters to match your DSC
+  #>
 
 # $parameters = @{
 #     Parameter1 = "..."
@@ -62,3 +65,5 @@ Invoke-Pester "$PSScriptRoot\.."
 # }
 
 
+Pop-Location
+ 

@@ -17,10 +17,14 @@ Param(
 )
 
 
-Push-Location $PSScriptRoot
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
 
-. .\Initialize-LocalEnvironment
-. .\Restore-AzureRmContext
+
+Push-Location "$PSScriptRoot\.."
+
+. .\Scripts\Initialize-LocalEnvironment
+. .\Scripts\Restore-AzureRmContext
 Import-Module "Cluster"
 
 $clusters = Select-Cluster $ServiceName $FlightingRingName $RegionName
@@ -28,7 +32,7 @@ foreach ($cluster in $clusters) {
     Write-Information "Deploying '$cluster'"
     Publish-ClusterConfiguration `
         -Cluster $cluster `
-        -DefinitionsContainer "$PSScriptRoot\..\Definitions" `
+        -DefinitionsContainer ".\Definitions" `
         -Expiry (Get-Date).AddMonths(1)
 }
 
